@@ -101,7 +101,7 @@ const LandingPage = () => {
       Where toppers<br className="hidden sm:block" /> are made.
     </h1>
     <p className="text-blue-50 text-base sm:text-lg mb-8 max-w-xl mx-auto">
-      Nursery to Class 12, Board Exams &amp; every major entrance &mdash; JEE, NEET, IPU, AIIMS, NTSE, NIOS and more, since 2008.
+      Nursery to Class 12, Board Exams &amp; every major entrance &mdash; JEE, NEET, IPU, AIIMS, NTSE, NIOS and more, since 2024.
     </p>
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
       <a
