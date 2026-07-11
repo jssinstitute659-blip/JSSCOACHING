@@ -125,4 +125,48 @@ const getMyProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { createStudent, getAllStudents, getStudentById, deleteStudent, getMyProfile };
+const updateJoiningDate = async (req, res, next) => {
+  try {
+    const { joiningDate } = req.body;
+    if (!joiningDate) {
+      return res.status(400).json({ success: false, message: 'joiningDate is required' });
+    }
+
+    const student = await Student.findById(req.params.id);
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'Student not found' });
+    }
+
+    const feeCount = await Fee.countDocuments({ studentId: student._id });
+    if (feeCount > 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot change joining date — student already has multiple fee cycles generated. Please contact support to fix this manually.',
+      });
+    }
+
+    const newJoiningDate = new Date(joiningDate);
+    student.joiningDate = newJoiningDate;
+    await student.save();
+
+    // If exactly one fee record exists (the first cycle), realign it to the new date
+    if (feeCount === 1) {
+      const fee = await Fee.findOne({ studentId: student._id });
+      const newEndDate = new Date(newJoiningDate);
+      newEndDate.setMonth(newEndDate.getMonth() + 1);
+      fee.startDate = newJoiningDate;
+      fee.endDate = newEndDate;
+      await fee.save();
+    }
+
+    const populated = await Student.findById(student._id)
+      .populate('userId', 'username')
+      .populate('batchId', 'name course');
+
+    res.json({ success: true, message: 'Joining date updated', data: populated });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createStudent, getAllStudents, getStudentById, deleteStudent, getMyProfile, updateJoiningDate };
