@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { submitInquiry } from '../../services/publicApi'
 import instituteHero from './institute-hero.jpg'
 import founderImg from './founder.jpg'
+import { getPublishedBatches } from '../../services/publicApi'
 
 const CONTACT_NUMBER = '9354126619'
 const WHATSAPP_NUMBER = '919354126619' // country code + number, no + or spaces
@@ -62,6 +63,8 @@ const features = [
   },
 ]
 
+
+
 const LandingPage = () => {
   const [form, setForm] = useState({ name: '', phone: '', targetCourse: '' })
   const [status, setStatus] = useState('')
@@ -81,6 +84,12 @@ const LandingPage = () => {
       setSubmitting(false)
     }
   }
+
+  const [paidBatches, setPaidBatches] = useState([])
+
+useEffect(() => {
+  getPublishedBatches().then(res => setPaidBatches(res.data.data)).catch(() => {})
+}, [])
 
   return (
     <div className="font-sans text-slate-800">
@@ -257,6 +266,55 @@ const LandingPage = () => {
 
   </div>
 </section>
+
+
+      {paidBatches.length > 0 && (
+  <section id="batches" className="max-w-6xl mx-auto py-16 px-6 sm:px-8">
+    <div className="text-center mb-12">
+      <span className="text-orange-500 font-semibold uppercase tracking-wider text-sm bg-orange-50 px-3 py-1 rounded-full inline-block mb-3">
+        Online Batches
+      </span>
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-900 tracking-tight">
+        Learn online, anytime
+      </h2>
+      <p className="mt-3 text-slate-600 max-w-2xl mx-auto">
+        Full recorded lecture batches with notes, doubt support, and lifetime access to your dashboard.
+      </p>
+    </div>
+
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {paidBatches.map((batch) => (
+              <div key={batch._id} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300">
+                <img src={batch.thumbnailUrl} alt={batch.title} className="w-full h-44 object-cover" />
+                <div className="p-5">
+                  <h3 className="font-bold text-blue-900 text-lg mb-2">{batch.title}</h3>
+                  {batch.shortDescription && (
+                    <p className="text-slate-500 text-sm mb-3 line-clamp-2">{batch.shortDescription}</p>
+                  )}
+                  <div className="flex items-center justify-between mt-4">
+                    <p>
+                      {batch.discountedPrice ? (
+                        <>
+                          <span className="text-orange-600 font-bold text-lg">₹{batch.discountedPrice.toLocaleString('en-IN')}</span>
+                          <span className="text-slate-400 line-through ml-2 text-sm">₹{batch.price.toLocaleString('en-IN')}</span>
+                        </>
+                      ) : (
+                        <span className="text-orange-600 font-bold text-lg">₹{batch.price.toLocaleString('en-IN')}</span>
+                      )}
+                    </p>
+                    <a
+                      href={`/batches/${batch._id}`}
+                      className="bg-blue-900 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors"
+                    >
+                      View details
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       
       {/* WHAT YOU GET (new section) */}

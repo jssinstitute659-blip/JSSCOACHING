@@ -24,6 +24,12 @@ import StudentDoubtsPage from '../pages/Student/DoubtsPage'
 import TeacherDoubtsPage from '../pages/Teacher/DoubtsPage'
 import AdminAnnouncementsPage   from '../pages/Admin/AnnouncementsPage'
 import TeacherAnnouncementsPage from '../pages/Teacher/AnnouncementsPage'
+import PaidBatchesPage from '../pages/Admin/PaidBatchesPage'
+import BatchEditorPage from '../pages/Admin/BatchEditorPage'
+import BatchDetailPage from '../pages/Public/BatchDetailPage'
+import PaidUserDashboard from '../pages/PaidUser/PaidUserDashboard'
+import PaidBatchViewPage from '../pages/PaidUser/PaidBatchViewPage'
+import PaidUserProfilePage from '../pages/PaidUser/PaidUserProfilePage'
 
 const guard = (roles, element) => <ProtectedRoute allowedRoles={roles}>{element}</ProtectedRoute>
 
@@ -32,6 +38,7 @@ const AppRoutes = () => (
     <Routes>
       <Route path="/" element={<PublicLayout><LandingPage /></PublicLayout>} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/batches/:id" element={<PublicLayout><BatchDetailPage /></PublicLayout>} />
 
       <Route path="/admin/dashboard" element={guard(['admin'], <AdminDashboard />)} />
       <Route path="/admin/students" element={guard(['admin'], <StudentsPage />)} />
@@ -43,6 +50,11 @@ const AppRoutes = () => (
       <Route path="/admin/tests" element={guard(['admin'], <TestsOverviewPage />)} />
       <Route path="/admin/tests/:id/analytics" element={guard(['admin'], <TestAnalyticsPage />)} />
       <Route path="/admin/announcements"   element={guard(['admin'],   <AdminAnnouncementsPage />)} />
+      <Route path="/admin/paid-batches" element={guard(['admin'], <PaidBatchesPage />)} />
+      <Route path="/admin/paid-batches/:id/edit" element={guard(['admin'], <BatchEditorPage />)} />
+      <Route path="/paiduser/dashboard" element={guard(['paiduser'], <PaidUserDashboard />)} />
+      <Route path="/paiduser/batches/:id" element={guard(['paiduser'], <PaidBatchViewPage />)} />
+      <Route path="/paiduser/profile" element={guard(['paiduser'], <PaidUserProfilePage />)} />
 
       <Route path="/teacher/dashboard" element={guard(['teacher'], <TeacherDashboard />)} />
       <Route path="/teacher/tests" element={guard(['teacher'], <TestsPage />)} />

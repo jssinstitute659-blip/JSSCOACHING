@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const PaidUser = require('../models/PaidUser');
 
 const protect = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -9,6 +10,17 @@ const protect = async (req, res, next) => {
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (decoded.role === 'paiduser') {
+      const paidUser = await PaidUser.findById(decoded.id).select('-password');
+      if (!paidUser) {
+        return res.status(401).json({ success: false, message: 'User no longer exists' });
+      }
+      req.user = paidUser.toObject();
+      req.user.role = 'paiduser';
+      return next();
+    }
+
     const user = await User.findById(decoded.id).select('-password');
     if (!user) {
       return res.status(401).json({ success: false, message: 'User no longer exists' });

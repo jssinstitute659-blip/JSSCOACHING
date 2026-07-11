@@ -16,6 +16,7 @@ const AdminLayout = ({ children }) => {
     { label: 'Students',       path: '/admin/students',       icon: '👤' },
     { label: 'Teachers',       path: '/admin/teachers',       icon: '🎓' },
     { label: 'Batches',        path: '/admin/batches',        icon: '📚' },
+    { label: 'Paid Batches',   path: '/admin/paid-batches',   icon: '🛒' },
     { label: 'Attendance',     path: '/admin/attendance',     icon: '✅' },
     { label: 'Fees',           path: '/admin/fees',           icon: '₹' },
     { label: 'Inquiries',      path: '/admin/inquiries',      icon: '📋' },

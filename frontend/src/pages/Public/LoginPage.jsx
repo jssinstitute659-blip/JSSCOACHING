@@ -25,8 +25,8 @@ const LoginPage = () => {
     setLoading(true)
     try {
       const res = await loginUser({ username, password })
-      const { token, role, username: uname } = res.data
-      login(token, { role, username: uname })
+      const { token, role, username: uname, mustChangePassword } = res.data
+      login(token, { role, username: uname, mustChangePassword: mustChangePassword || false })
       navigate(`/${role}/dashboard`, { replace: true })
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.')

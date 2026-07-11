@@ -24,6 +24,14 @@ export const AuthProvider = ({ children }) => {
     setUser(userData)
   }
 
+  const updateUser = (partialUpdate) => {
+    setUser((prev) => {
+      const updated = { ...prev, ...partialUpdate }
+      localStorage.setItem('instora_user', JSON.stringify(updated))
+      return updated
+    })
+  }
+
   const logout = () => {
     localStorage.removeItem('instora_token')
     localStorage.removeItem('instora_user')
@@ -38,6 +46,7 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated: !!token,
       loading,
       login,
+      updateUser,
       logout
     }}>
       {children}

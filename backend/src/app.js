@@ -17,6 +17,12 @@ const testRoutes      = require('./routes/testRoutes');
 const razorpayRoutes  = require('./routes/razorpayRoutes');
 const doubtRoutes     = require('./routes/doubtRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
+const paidBatchRoutes = require('./routes/paidBatchRoutes');
+const paidBatchPurchaseRoutes = require('./routes/paidBatchPurchaseRoutes');
+const paidUserRoutes = require('./routes/paidUserRoutes');
+const lectureRoutes = require('./routes/lectureRoutes');
+const paidLearnerRoutes = require('./routes/paidLearnerRoutes');
+
 
 const app = express();
 
@@ -62,6 +68,12 @@ app.use('/api/tests',      testRoutes);
 app.use('/api/razorpay',   razorpayRoutes);
 app.use('/api/doubts',     doubtRoutes);
 app.use('/api/announcements', announcementRoutes);
+app.use('/api/paid-batches/purchase', paidBatchPurchaseRoutes);
+app.use('/api/admin/content', lectureRoutes); 
+app.use('/api/learn', paidLearnerRoutes); 
+app.use('/api/paid-batches', paidBatchRoutes);
+app.use('/api/paid-users', paidUserRoutes);
+
 
 app.get('/', (req, res) => res.json({ message: 'Instora API is running ✅' }));
 app.use(errorHandler);
