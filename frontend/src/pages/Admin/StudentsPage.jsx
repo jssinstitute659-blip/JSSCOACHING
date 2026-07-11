@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import AdminLayout from '../../layouts/AdminLayout'
-import { getAllStudents, createStudent, deleteStudent } from '../../services/studentApi'
+import { getAllStudents, createStudent, deleteStudent, updateStudentJoiningDate } from '../../services/studentApi'
 import { getAllBatches } from '../../services/batchApi'
 
 
@@ -17,6 +17,11 @@ const StudentsPage = () => {
     monthlyFee: '', initialFeeStatus: 'unpaid',
     joiningDate: new Date().toISOString().slice(0, 10),
   })
+
+  // Edit joining date modal state
+  const [editingStudent, setEditingStudent] = useState(null)
+  const [editDate, setEditDate] = useState('')
+  const [editSubmitting, setEditSubmitting] = useState(false)
 
   const fetchAll = async () => {
     try {
@@ -59,6 +64,27 @@ const StudentsPage = () => {
       fetchAll()
     } catch {
       setError('Failed to delete student')
+    }
+  }
+
+  const openEditDate = (student) => {
+    setEditingStudent(student)
+    setEditDate(new Date(student.joiningDate).toISOString().slice(0, 10))
+    setError('')
+  }
+
+  const handleUpdateJoiningDate = async (e) => {
+    e.preventDefault()
+    setEditSubmitting(true)
+    setError('')
+    try {
+      await updateStudentJoiningDate(editingStudent._id, editDate)
+      setEditingStudent(null)
+      fetchAll()
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update joining date')
+    } finally {
+      setEditSubmitting(false)
     }
   }
 
@@ -282,17 +308,66 @@ const StudentsPage = () => {
                       {new Date(student.joiningDate).toLocaleDateString('en-IN')}
                     </td>
                     <td className="px-5 py-4">
-                      <button
-                        onClick={() => handleDelete(student._id, student.fullName)}
-                        className="text-xs text-red-400 hover:text-red-600 transition-colors"
-                      >
-                        Delete
-                      </button>
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => openEditDate(student)}
+                          className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                        >
+                          Edit date
+                        </button>
+                        <button
+                          onClick={() => handleDelete(student._id, student.fullName)}
+                          className="text-xs text-red-400 hover:text-red-600 transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {editingStudent && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+            <div className="bg-white rounded-xl p-6 w-full max-w-sm">
+              <h2 className="font-semibold text-gray-800 mb-1">Edit joining date</h2>
+              <p className="text-gray-500 text-sm mb-4">{editingStudent.fullName}</p>
+              <form onSubmit={handleUpdateJoiningDate} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-gray-700">Joining date</label>
+                  <input
+                    type="date"
+                    value={editDate}
+                    onChange={(e) => setEditDate(e.target.value)}
+                    required
+                    max={new Date().toISOString().slice(0, 10)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg">
+                  This also updates the student's first fee cycle dates. Only works if no additional fee cycles have been generated yet.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditingStudent(null)}
+                    className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={editSubmitting}
+                    className="bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors disabled:opacity-50"
+                  >
+                    {editSubmitting ? 'Saving...' : 'Save'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>
