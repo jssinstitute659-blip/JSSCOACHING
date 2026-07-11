@@ -14,7 +14,8 @@ const StudentsPage = () => {
   const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     fullName: '', username: '', password: '', parentPhone: '', batchId: '',
-    monthlyFee: '', initialFeeStatus: 'unpaid'
+    monthlyFee: '', initialFeeStatus: 'unpaid',
+    joiningDate: new Date().toISOString().slice(0, 10),
   })
 
   const fetchAll = async () => {
@@ -37,7 +38,11 @@ const StudentsPage = () => {
     setError('')
     try {
       await createStudent(form)
-      setForm({ fullName: '', username: '', password: '', parentPhone: '', batchId: '', monthlyFee: '', initialFeeStatus: 'unpaid' })
+      setForm({
+        fullName: '', username: '', password: '', parentPhone: '',
+        batchId: '', monthlyFee: '', initialFeeStatus: 'unpaid',
+        joiningDate: new Date().toISOString().slice(0, 10),
+      })
       setShowForm(false)
       fetchAll()
     } catch (err) {
@@ -139,6 +144,17 @@ const StudentsPage = () => {
                     onChange={(e) => setForm({ ...form, parentPhone: e.target.value })}
                     placeholder="Parent's mobile number"
                     required
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-gray-700">Joining date</label>
+                  <input
+                    type="date"
+                    value={form.joiningDate}
+                    onChange={(e) => setForm({ ...form, joiningDate: e.target.value })}
+                    required
+                    max={new Date().toISOString().slice(0, 10)}
                     className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
