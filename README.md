@@ -9,7 +9,7 @@ Currently deployed and publicly branded as **JSS — Jai Shree Shyam Coaching In
 
 - 🌐 **Live Application:** https://jsscoaching.vercel.app
 - ⚙️ **Backend API:** https://jsscoaching-production.up.railway.app
-- 📂 **Source Code:** https://github.com/hemantsaini30/Instora_base
+- 📂 **Source Code:** https://github.com/jssinstitute659-blip/JSSCOACHING
 
 ---
 
