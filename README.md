@@ -3,7 +3,7 @@
 **A full-stack digital operations platform for offline coaching institutes** — replacing physical registers, attendance notebooks, fee receipts, and WhatsApp-based communication with a single, role-based web application. Extended with a paid online batch marketplace for recorded video courses.
 
 Currently deployed and publicly branded as **JSS — Jai Shree Shyam Coaching Institute**. *"Instora"* is the underlying platform/product name; *"JSS"* is the institute using it (shown to end users via a "Powered by Instora" footer credit).
-
+[Live](https://jsscoaching.vercel.app)
 [Backend API](https://jsscoaching-production.up.railway.app) · [Report a Bug](#)
 
 ---
