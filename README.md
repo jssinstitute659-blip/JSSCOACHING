@@ -5,8 +5,11 @@
 Currently deployed and publicly branded as **JSS — Jai Shree Shyam Coaching Institute**. *"Instora"* is the underlying platform/product name; *"JSS"* is the institute using it (shown to end users via a "Powered by Instora" footer credit).
 
 
-[Live](https://jsscoaching.vercel.app)
-[Backend API](https://jsscoaching-production.up.railway.app) · [Report a Bug](#)
+## 🔗 Links
+
+- 🌐 **Live Application:** https://jsscoaching.vercel.app
+- ⚙️ **Backend API:** https://jsscoaching-production.up.railway.app
+- 📂 **Source Code:** https://github.com/hemantsaini30/Instora_base
 
 ---
 
