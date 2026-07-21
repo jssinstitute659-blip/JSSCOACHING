@@ -48,7 +48,7 @@ app.use(noSQLInjection);
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: process.env.NODE_ENV === 'test' ? 1000 : 50,
   message: { success: false, message: 'Too many login attempts. Try again after 15 minutes.' },
   standardHeaders: true,
   legacyHeaders: false,
